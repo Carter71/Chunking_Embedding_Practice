@@ -1,12 +1,12 @@
 # Import Libraries
 from rich import print
-from langchain.docstore,document import Document
-from landchain_community.chat_models import ChatOllama
-from landchain_community.vectorstores import Chroma
-from landchain_community import embeddings
-from landchain_core.runnables import RunnablePassthrough
-from landchain_core.output_parsers import StringOutputParser
-from landchain_core.prompts import ChatPromptTemplate
+from langchain.docstore.document import Document
+from langchain_community.chat_models import ChatOllama
+from langchain_community.vectorstores import Chroma
+from langchain_community import embeddings
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
 
 
 # Import our local model
@@ -19,9 +19,9 @@ def rag(chunks, collection_name):
         collection_name=collection_name,
         embedding=embeddings.ollama.OllamaEmbeddings(model="nomic-embed-text")
         )
-    retriver = vectorstore.as_retriever()
+    retriever = vectorstore.as_retriever()
 
-    prompt_template = """Answer the question based onlt on the following context: 
+    prompt_template = """Answer the question based only on the following context: 
     {context}
     Question: {question}
     """
@@ -29,10 +29,10 @@ def rag(chunks, collection_name):
     prompt = ChatPromptTemplate.from_template(prompt_template)
 
     chain = (
-        {"context": retriver, "question": RunnablePassthrough()}
+        {"context": retriever, "question": RunnablePassthrough()}
         | prompt
         | local_llm
-        | StringOutputParser()
+        | StrOutputParser()
     )
     results = chain.invoke("What is the use of Text Splitting?")
     print(results)
