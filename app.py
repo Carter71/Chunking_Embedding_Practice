@@ -47,17 +47,24 @@ for i in range(0, len(text), chunk_size):
     chunk = text[i:i + chunk_size]
     chunks.append(chunk)
 documents = [Document(page_content=chunk, metadata={"source": "local"}) for chunk in chunks]
-print(documents)
+# print(documents)
 
 # Automatic Text Splitting using LangChain's TextSplitter
 from langchain_text_splitters import CharacterTextSplitter
 text_splitter = CharacterTextSplitter(chunk_size=35, chunk_overlap=0, separator="", strip_whitespace=False)
 documents = text_splitter.create_documents([text])
-print(documents)
+# print(documents)
 
 # 2. Recursive Text Splitting
 print("--- Recursive Text Splitting ---")
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=35, chunk_overlap=0, separators=["\n\n", "\n", " ", ""])
+with open('sample.txt', 'r', encoding='utf-8') as file:
+    text = file.read()
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=200, chunk_overlap=0, separators=["\n\n", "\n", " ", ""])
 documents = text_splitter.create_documents([text])
-print(documents)
+# print(documents)
+
+
+# 3. Document Text Splitting
+print("--- Document Text Splitting ---")
