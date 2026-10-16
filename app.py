@@ -51,6 +51,13 @@ print(documents)
 
 # Automatic Text Splitting using LangChain's TextSplitter
 from langchain_text_splitters import CharacterTextSplitter
-text_splitter = CharacterTextSplitter(chunk_size=35, chunk_overlap=0, separator=" ", strip_whitespace=False)
+text_splitter = CharacterTextSplitter(chunk_size=35, chunk_overlap=0, separator="", strip_whitespace=False)
+documents = text_splitter.create_documents([text])
+print(documents)
+
+# 2. Recursive Text Splitting
+print("--- Recursive Text Splitting ---")
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=35, chunk_overlap=0, separators=["\n\n", "\n", " ", ""])
 documents = text_splitter.create_documents([text])
 print(documents)
