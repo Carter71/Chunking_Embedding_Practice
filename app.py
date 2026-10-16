@@ -67,4 +67,68 @@ documents = text_splitter.create_documents([text])
 
 
 # 3. Document Text Splitting
+
+# Document Specific Splitting - Markdown
 print("--- Document Text Splitting ---")
+from langchain_text_splitters import MarkdownTextSplitter
+splitter = MarkdownTextSplitter(chunk_size=40, chunk_overlap=0)
+
+markdown_text = """
+# Fun in california
+
+## Driving
+
+Try dribving on the 1 down to san diego
+
+### Food
+
+Make sure to eat a burrito while you're there
+
+## Hiking
+
+Go to Yosemite
+"""
+print("--- Document Specific Splitting - Markdown ---")
+print(splitter.create_documents([markdown_text]))
+
+
+
+# Docuemnt Specific Splitting - Python
+from langchain_text_splitters import PythonCodeTextSplitter
+python_text = """
+class Python:
+    def __init__(self):
+        self.name = name
+        self.age = age
+
+p1 = Person("John", 36)
+
+for i in range(10):
+    print(i)
+
+"""
+
+python_splitter = PythonCodeTextSplitter(chunk_size=100, chunk_overlap=0)
+print("--- Document Specific Splitting - Python ---")
+print(python_splitter.create_documents([python_text]))
+
+
+
+
+# Document Specific Splitting - JavaScript
+from langchain_text_splitters import RecursiveCharacterTextSplitter, Language
+javascript_text = """
+// Function is calledm the return value will end up in x
+let x = myFunction(4, 3);
+
+function myFunction(a, b) {
+// Function returns the product of a and b
+    return a * b;
+}
+"""
+js_splitter = RecursiveCharacterTextSplitter.from_language(
+    language=Language.JS, chunk_size=65, chunk_overlap=0
+)
+print("--- Document Specific Splitting - JavaScript ---")
+print(js_splitter.create_documents([javascript_text]))
+
